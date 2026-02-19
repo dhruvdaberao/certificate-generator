@@ -186,44 +186,48 @@ download.addEventListener("click", () => {
   }, 250);
 
   // PREPARE FOR PDF GENERATION
-  // 1. Store current transform styles
-  const originalTransform = certificate.style.transform;
-  const originalTransformOrigin = certificate.style.transformOrigin;
-  const originalMargin = certificate.style.margin;
+  // Create a clone of the certificate to generate PDF from
+  // This avoids issues with current viewport scaling, transforms, or visibility
+  const originalCert = document.getElementById("certificate");
+  const clone = originalCert.cloneNode(true);
 
-  // 2. Reset styles to ensure PDF is generated from full-size, unscaled element
-  // We need the element to be visible and fully rendered at 1280px width
-  certificate.style.transform = "none";
-  certificate.style.margin = "0"; // Reset margin to avoid offsetting in PDF
+  // Style the clone to be perfect for PDF
+  clone.style.display = "flex";
+  clone.style.position = "absolute";
+  clone.style.top = "-9999px"; // Hide from view
+  clone.style.left = "0";
+  clone.style.transform = "none";
+  clone.style.margin = "0";
+  clone.style.width = "1280px"; // Force standard width
+  clone.style.height = "auto";
+  clone.style.zIndex = "-1";
 
-  // Get exact dimensions of the certificate
-  const certWidth = certificate.offsetWidth;
-  const certHeight = certificate.offsetHeight;
+  // Append to body so html2canvas can render it
+  document.body.appendChild(clone);
 
-  // 3. Generate PDF
+  // Get exact dimensions of the clone
+  const certWidth = clone.offsetWidth;
+  const certHeight = clone.offsetHeight;
+
+  // Generate PDF
   var opt = {
     margin: 0,
     filename: `Udemy-certificate.pdf`,
     image: { type: "jpeg", quality: 0.98 },
     html2canvas: {
-      scale: 1, // Use 1:1 scale to avoid zooming/cropping issues
+      scale: 2, // We can use higher scale now for better quality
       useCORS: true,
       scrollY: 0,
       scrollX: 0,
-      windowWidth: certWidth, // Match window width to element width
-      width: certWidth,
+      windowWidth: 1280,
+      width: 1280,
       height: certHeight
     },
-    jsPDF: { unit: "px", format: [certWidth, certHeight], orientation: "landscape" }, // Exact match
+    jsPDF: { unit: "px", format: [1280, certHeight], orientation: "landscape" },
   };
 
-  html2pdf().set(opt).from(certificate).save().then(() => {
-    // 4. Restore styles after generation
-    certificate.style.transform = originalTransform;
-    certificate.style.transformOrigin = originalTransformOrigin;
-    certificate.style.margin = originalMargin;
-
-    // Re-run scale to be safe
-    scaleCertificate();
+  html2pdf().set(opt).from(clone).save().then(() => {
+    // Remove clone after generation
+    document.body.removeChild(clone);
   });
 });
