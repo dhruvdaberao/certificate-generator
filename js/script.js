@@ -58,21 +58,18 @@ generate.addEventListener("click", (e) => {
     if (instructor.includes(",")) {
       instruct = "Instructors";
     }
-    // Clear inputs
-    fname.value = "";
-    lname.value = "";
-    course.value = "";
-    date.value = "";
-    teacher.value = "";
-    length.value = "";
+    // Inputs are NOT cleared so user can edit if needed
+
 
     form.style.display = "none";
     // container.style.backgroundColor = "white"; // Don't change container bg in dark mode
     container.style.height = "auto";
 
     let certificate = document.getElementById("certificate");
+    let certificateWrapper = document.getElementById("certificate-wrapper"); // Get wrapper
     certificate.style.backgroundColor = "#f8f9fb";
     certificate.style.display = "flex";
+    if (certificateWrapper) certificateWrapper.style.display = "flex"; // Ensure wrapper is visible
 
     // Using a remote URL for Udemy logo since local one was deleted and user requested original style
     certificate.innerHTML = `<div class="logo">
@@ -101,10 +98,16 @@ generate.addEventListener("click", (e) => {
     // In CSS mobile: .download-container { display: none; }
     // So we need to show the container on mobile too.
     const downloadContainer = document.querySelector(".download-container");
+    const editBtn = document.getElementById("edit");
+
     if (downloadContainer) {
       downloadContainer.style.display = "flex";
+      // Add active class for mobile fixed positioning validation
+      downloadContainer.classList.add("active");
     }
+
     downloadBtn.style.display = "block";
+    if (editBtn) editBtn.style.display = "block";
 
     // Scale after render
     setTimeout(scaleCertificate, 100);
@@ -139,6 +142,24 @@ function scaleCertificate() {
 }
 
 window.addEventListener('resize', scaleCertificate);
+
+// Edit Logic
+let editBtn = document.getElementById("edit");
+if (editBtn) {
+  editBtn.addEventListener("click", () => {
+    // Hide certificate and download buttons
+    document.getElementById("certificate-wrapper").style.display = "none";
+    document.querySelector(".download-container").style.display = "none";
+    document.querySelector(".download-container").classList.remove("active");
+
+    // Show form
+    form.style.display = "grid"; // Restore grid layout
+    container.style.height = "auto";
+
+    // Hide certificate (optional, wrapper hides it mainly)
+    document.getElementById("certificate").style.display = "none";
+  });
+}
 
 //Download PDF
 
