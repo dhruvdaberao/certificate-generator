@@ -126,8 +126,7 @@ textarea::placeholder {
 }
 
 button#Generate,
-button#download,
-button#edit {
+button#download {
     background-color: #ffffff;
     color: #000000;
     border: none;
@@ -141,15 +140,13 @@ button#edit {
 }
 
 button#Generate:hover,
-button#download:hover,
-button#edit:hover {
+button#download:hover {
     transform: translateY(-2px);
     box-shadow: 0 4px 12px rgba(255, 255, 255, 0.2);
 }
 
 button#Generate:active,
-button#download:active,
-button#edit:active {
+button#download:active {
     transform: translateY(0);
 }
 
@@ -252,26 +249,11 @@ button#edit:active {
     display: flex;
     justify-content: center;
     width: 100%;
-    gap: 1rem;
-    /* Space between buttons */
-    align-items: center;
-}
-
-#edit {
-    display: none;
-    margin: 2rem 0;
-    background-color: transparent;
-    border: 2px solid #ffffff;
-    color: #ffffff;
-}
-
-#edit:hover {
-    background-color: rgba(255, 255, 255, 0.1);
 }
 
 #download {
     display: none;
-    margin: 2rem 0;
+    margin: 2rem auto;
     background-color: #2ecc71;
     /* Green for download action */
     color: white;
@@ -365,18 +347,12 @@ button#edit:active {
     }
 
     /* Override specific button styles for mobile fixed position */
-    #download,
-    #edit {
+    #download {
         margin: 0;
         width: 100%;
-        /* Full width or share space */
-        flex: 1;
-        /* Equal width */
-        max-width: none;
+        max-width: 400px;
         display: block;
-        font-size: 0.9rem;
-        /* Slightly smaller text for mobile */
-        padding: 0.875rem 0.5rem;
+        /* Ensure button itself is visible within container */
     }
 
     /* Add padding to body so content isn't covered by fixed button */
