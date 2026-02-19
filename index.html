@@ -1,83 +1,90 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Certificate Generator</title>
-    <link rel="stylesheet" href="css/style.css" />
-    <link rel="icon" type="image/x-icon" href="img/certificate.png" />
 
-    <!-- Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet" />
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&display=swap" rel="stylesheet" />
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@700&display=swap" rel="stylesheet" />
-    <link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet" />
-    <!-- Additional fonts required for the certificate generation rendering -->
-    <link href="//db.onlinewebfonts.com/c/7db56b18988b0db9d84b3bfd3d4f9b6b?family=DistrictProW01-Medium" rel="stylesheet" type="text/css" />
-    <link href="//db.onlinewebfonts.com/c/ceae0b0ba6ed654c11bebaa577938012?family=Arno+Pro+Display" rel="stylesheet" type="text/css" />
-  </head>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Certificate Generator</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="icon" type="image/x-icon" href="img/certificate.png" />
 
-  <body>
-    <div class="app-container">
-      <header class="app-header">
-        <img src="img/certificate.png" alt="Logo" class="app-logo" />
-        <h1 class="app-title">Certificate Generator</h1>
-      </header>
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Space+Grotesk:wght@500;700&display=swap"
+    rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet" />
+  <!-- Additional fonts required for the certificate generation rendering -->
+  <link href="//db.onlinewebfonts.com/c/7db56b18988b0db9d84b3bfd3d4f9b6b?family=DistrictProW01-Medium" rel="stylesheet"
+    type="text/css" />
+  <link href="//db.onlinewebfonts.com/c/ceae0b0ba6ed654c11bebaa577938012?family=Arno+Pro+Display" rel="stylesheet"
+    type="text/css" />
+</head>
 
-      <div class="container">
-        <form action="#" id="form">
-          <div class="form-group">
-            <label for="fname">First Name</label>
-            <input type="text" name="fname" id="fname" required placeholder="Enter first name" />
-          </div>
-          <div class="form-group">
-            <label for="lname">Last Name</label>
-            <input type="text" name="lname" id="lname" required placeholder="Enter last name" />
-          </div>
-          <div class="form-group">
-            <label for="date">Date of Completion</label>
-            <input type="text" name="date" id="date" placeholder="e.g. Jan. 25, 2026" required />
-          </div>
-          <div class="form-group">
-            <label for="length">Length of Course (Hours)</label>
-            <input type="number" name="length" id="length" required placeholder="e.g. 10" />
-          </div>
-          <div class="form-group">
-            <label for="course">Course Name</label>
-            <textarea name="course" id="course" rows="2" required placeholder="Enter course name"></textarea>
-          </div>
-          <div class="form-group">
-            <label for="teacher">Instructor's Name</label>
-            <input type="text" name="teacher" id="teacher" required placeholder="Enter instructor's name" />
-          </div>
-          
-          <div class="btn-container">
-            <button id="Generate" type="submit">Generate Certificate</button>
-          </div>
-        </form>
+<body>
+  <div class="app-container">
+    <header class="app-header">
+      <img src="img/certificate.png" alt="Logo" class="app-logo" />
+      <h1 class="app-title">Certificate Generator</h1>
+    </header>
 
-        <div id="certificate">
-          <!-- Certificate content will be injected here by JS -->
+    <div class="container">
+      <form action="#" id="form">
+        <div class="form-group">
+          <label for="fname">First Name</label>
+          <input type="text" name="fname" id="fname" required placeholder="Enter first name" />
         </div>
-        <button id="download">Download PDF</button>
-      </div>
-    </div>
+        <div class="form-group">
+          <label for="lname">Last Name</label>
+          <input type="text" name="lname" id="lname" required placeholder="Enter last name" />
+        </div>
+        <div class="form-group">
+          <label for="date">Date of Completion</label>
+          <input type="date" name="date" id="date" required />
+        </div>
+        <div class="form-group">
+          <label for="length">Length of Course (Hours)</label>
+          <input type="number" name="length" id="length" required placeholder="e.g. 10" />
+        </div>
+        <div class="form-group">
+          <label for="course">Course Name</label>
+          <textarea name="course" id="course" rows="2" required placeholder="Enter course name"></textarea>
+        </div>
+        <div class="form-group">
+          <label for="teacher">Instructor's Name</label>
+          <input type="text" name="teacher" id="teacher" required placeholder="Enter instructor's name" />
+        </div>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
-    <script src="js/script.js"></script>
-    <script>
-        function isMobileDevice() {
-          return (
-            typeof window.orientation !== "undefined" ||
-            navigator.userAgent.indexOf("IEMobile") !== -1
-          );
-        }
-        if (isMobileDevice()) {
-          // Optional: Add a subtle notification instead of a blocking alert if desired, 
-          // but keeping logic similar to original for now.
-        }
-      </script>
-  </body>
+        <div class="btn-container">
+          <button id="Generate" type="submit">Generate Certificate</button>
+        </div>
+      </form>
+
+      <div id="certificate">
+        <!-- Certificate content will be injected here by JS -->
+      </div>
+      <button id="download">Download PDF</button>
+    </div>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+  <script src="js/script.js"></script>
+  <script>
+    function isMobileDevice() {
+      return (
+        typeof window.orientation !== "undefined" ||
+        navigator.userAgent.indexOf("IEMobile") !== -1
+      );
+    }
+    if (isMobileDevice()) {
+      // Optional: Add a subtle notification instead of a blocking alert if desired, 
+      // but keeping logic similar to original for now.
+    }
+  </script>
+</body>
+
 </html>

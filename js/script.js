@@ -33,7 +33,14 @@ generate.addEventListener("click", (e) => {
   e.preventDefault();
   let first_name = fname.value;
   let last_name = lname.value;
-  let Date = date.value;
+  let DateValue = date.value;
+  let formattedDate = "";
+  if (DateValue) {
+    const dateObj = new Date(DateValue);
+    const options = { year: 'numeric', month: 'short', day: 'numeric' };
+    formattedDate = dateObj.toLocaleDateString('en-US', options);
+  }
+
   let c_length = length.value;
   let course_name = course.value.replace(/\n/g, "<br>");
   let instructor = teacher.value;
@@ -41,7 +48,7 @@ generate.addEventListener("click", (e) => {
   if (
     first_name === "" ||
     last_name === "" ||
-    Date === "" ||
+    DateValue === "" ||
     c_length === "" ||
     course_name === "" ||
     instructor === ""
@@ -51,6 +58,7 @@ generate.addEventListener("click", (e) => {
     if (instructor.includes(",")) {
       instruct = "Instructors";
     }
+    // Clear inputs
     fname.value = "";
     lname.value = "";
     course.value = "";
@@ -59,14 +67,16 @@ generate.addEventListener("click", (e) => {
     length.value = "";
 
     form.style.display = "none";
-    container.style.backgroundColor = "white";
+    // container.style.backgroundColor = "white"; // Don't change container bg in dark mode
     container.style.height = "auto";
 
     let certificate = document.getElementById("certificate");
     certificate.style.backgroundColor = "#f8f9fb";
     certificate.style.display = "flex";
+
+    // Using a remote URL for Udemy logo since local one was deleted and user requested original style
     certificate.innerHTML = `<div class="logo">
-    <img id="udemy-logo" src="img/certificate.png" alt="Certificate Logo" style="width: 100px; height: auto;">
+    <img id="udemy-logo" src="https://www.udemy.com/staticx/udemy/images/v7/logo-udemy.svg" alt="Udemy Logo" style="width: 100px; height: auto;">
     <div class="right-side">
                       <div class="c-no">Certificate no: UC-3308c41b-93cb-485a-9ee3-${rand2}f8ef${rand4}</div>
                       <div class="c-url">Certificate url: ude.my/UC-3308c41b-93cb-485a-9ee3-${rand2}f8ef${rand4}</div>
@@ -80,7 +90,7 @@ generate.addEventListener("click", (e) => {
   </div>
   <div class="user">
     <h1 id="name">${first_name} ${last_name}</h1>
-    <h4>Date &nbsp;<b>${Date}</b></h4>
+    <h4>Date &nbsp;<b>${formattedDate}</b></h4>
     <h4>Length &nbsp;<b>${c_length} total hours</b></h4>
   </div>
   `;
@@ -92,6 +102,28 @@ generate.addEventListener("click", (e) => {
 
 let download = document.getElementById("download");
 download.addEventListener("click", () => {
+  // Trigger Confetti
+  var duration = 5 * 1000;
+  var animationEnd = Date.now() + duration;
+  var defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 0 };
+
+  function randomInRange(min, max) {
+    return Math.random() * (max - min) + min;
+  }
+
+  var interval = setInterval(function () {
+    var timeLeft = animationEnd - Date.now();
+
+    if (timeLeft <= 0) {
+      return clearInterval(interval);
+    }
+
+    var particleCount = 50 * (timeLeft / duration);
+    // since particles fall down, start a bit higher than random
+    confetti(Object.assign({}, defaults, { particleCount, origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 } }));
+    confetti(Object.assign({}, defaults, { particleCount, origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 } }));
+  }, 250);
+
   var opt = {
     margin: 1,
     filename: `Udemy-certificate.pdf`,

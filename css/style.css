@@ -61,8 +61,15 @@ body {
     flex-direction: column;
 }
 
-.form-group:nth-child(5) { /* Course Name spans full width */
+.form-group:nth-child(5) {
+    /* Course Name spans full width */
     grid-column: span 2;
+}
+
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
 }
 
 label {
@@ -72,7 +79,8 @@ label {
     color: #a0a0a0;
 }
 
-input, textarea {
+input,
+textarea {
     background-color: #2c2c2c;
     border: 1px solid #444;
     color: #ffffff;
@@ -83,14 +91,16 @@ input, textarea {
     transition: all 0.2s ease;
 }
 
-input:focus, textarea:focus {
+input:focus,
+textarea:focus {
     outline: none;
     border-color: #ffffff;
     background-color: #333;
     box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.1);
 }
 
-input::placeholder, textarea::placeholder {
+input::placeholder,
+textarea::placeholder {
     color: #666;
 }
 
@@ -101,7 +111,8 @@ input::placeholder, textarea::placeholder {
     margin-top: 1rem;
 }
 
-button#Generate, button#download {
+button#Generate,
+button#download {
     background-color: #ffffff;
     color: #000000;
     border: none;
@@ -114,12 +125,14 @@ button#Generate, button#download {
     font-family: 'Space Grotesk', sans-serif;
 }
 
-button#Generate:hover, button#download:hover {
+button#Generate:hover,
+button#download:hover {
     transform: translateY(-2px);
     box-shadow: 0 4px 12px rgba(255, 255, 255, 0.2);
 }
 
-button#Generate:active, button#download:active {
+button#Generate:active,
+button#download:active {
     transform: translateY(0);
 }
 
@@ -127,12 +140,16 @@ button#Generate:active, button#download:active {
 /* These styles are crucial for the generated certificate to look correct */
 
 #certificate {
-    display: none; /* Hidden by default */
+    display: none;
+    /* Hidden by default */
     flex-direction: column;
     padding: 60px;
-    width: 1280px; /* Fixed width for PDF generation consistency */
-    background-color: #f8f9fb; /* Keep light background for certificate */
-    color: #333; /* Reset color for certificate */
+    width: 1280px;
+    /* Fixed width for PDF generation consistency */
+    background-color: #f8f9fb;
+    /* Keep light background for certificate */
+    color: #333;
+    /* Reset color for certificate */
     border-radius: 4px;
     margin: 0 auto;
     font-family: 'Montserrat', sans-serif;
@@ -140,82 +157,88 @@ button#Generate:active, button#download:active {
 
 /* Override dark theme for certificate internals */
 #certificate * {
-    color: #1c1c1c; 
+    color: #1c1c1c;
     text-shadow: none;
 }
 
 .logo {
-  display: flex;
-  align-items: center;
-  width: auto;
+    display: flex;
+    align-items: center;
+    width: auto;
 }
 
 .right-side {
-  font-size: 14px;
-  font-family: "DistrictProW01-Medium", sans-serif;
-  color: rgba(107, 107, 107, 0.879);
-  text-align: right;
-  margin-left: auto; /* Flex spacer */
+    font-size: 14px;
+    font-family: "DistrictProW01-Medium", sans-serif;
+    color: rgba(107, 107, 107, 0.879);
+    text-align: right;
+    margin-left: auto;
+    /* Flex spacer */
 }
-.right-side > div {
-  margin-top: 10px;
+
+.right-side>div {
+    margin-top: 10px;
 }
+
 #udemy-logo {
-  height: 100px; /* Adjusted size */
+    height: 100px;
+    /* Adjusted size */
 }
 
 .content {
-  font-family: "Montserrat", sans-serif;
-  font-weight: bolder;
-  margin-top: 70px;
+    font-family: "Montserrat", sans-serif;
+    font-weight: bolder;
+    margin-top: 70px;
 }
 
-.content > h4,
-.user > h4 {
-  font-family: "DistrictProW01-Medium", sans-serif;
-  font-weight: 400;
-  font-size: 20px;
-  margin-top: 18px;
-  color: #333;
+.content>h4,
+.user>h4 {
+    font-family: "DistrictProW01-Medium", sans-serif;
+    font-weight: 400;
+    font-size: 20px;
+    margin-top: 18px;
+    color: #333;
 }
 
-.content > h3 {
-  color: rgba(100, 100, 100, 0.899);
-  letter-spacing: 1.5px;
+.content>h3 {
+    color: rgba(100, 100, 100, 0.899);
+    letter-spacing: 1.5px;
 }
 
-.content > h1 {
-  margin: 0;
-  font-family: "Arno Pro Display", serif;
-  font-size: 80px;
-  font-weight: bold;
+.content>h1 {
+    margin: 0;
+    font-family: "Arno Pro Display", serif;
+    font-size: 80px;
+    font-weight: bold;
 }
 
-.content > h4 > b,
-.user > h4 > b {
-  font-family: "Poppins", sans-serif;
-  color: rgb(28, 28, 28);
-  font-size: 20px;
+.content>h4>b,
+.user>h4>b {
+    font-family: "Poppins", sans-serif;
+    color: rgb(28, 28, 28);
+    font-size: 20px;
 }
 
-.user > h1 {
-  font-size: 42px;
-  font-family: "Poppins", sans-serif;
-  color: rgb(28, 28, 28);
-  font-weight: bolder;
+.user>h1 {
+    font-size: 42px;
+    font-family: "Poppins", sans-serif;
+    color: rgb(28, 28, 28);
+    font-weight: bolder;
 }
 
 .user {
-  margin-top: 150px;
+    margin-top: 150px;
 }
 
 /* Download Button State */
 #download {
     display: none;
     margin: 2rem auto;
-    background-color: #2ecc71; /* Green for download action */
+    background-color: #2ecc71;
+    /* Green for download action */
     color: white;
 }
+
 #download:hover {
     background-color: #27ae60;
 }
@@ -226,11 +249,11 @@ button#Generate:active, button#download:active {
         grid-template-columns: 1fr;
         padding: 1.5rem;
     }
-    
+
     .form-group:nth-child(5) {
         grid-column: span 1;
     }
-    
+
     .app-title {
         font-size: 2rem;
     }
