@@ -410,9 +410,13 @@ download.addEventListener("click", async () => {
     return;
   }
 
-  // Clone for PDF (avoid transforms / viewport scaling)
   const clone = originalCert.cloneNode(true);
 
+  // ✅ CRITICAL: remove id so `#certificate { display:none }` can't kill it
+  clone.removeAttribute("id");
+  clone.classList.add("certificate-print");
+
+  // force correct size for capture
   clone.style.transform = "none";
   clone.style.margin = "0";
   clone.style.width = "1280px";
@@ -420,18 +424,16 @@ download.addEventListener("click", async () => {
   clone.style.display = "flex";
   clone.style.position = "relative";
   clone.style.background = "#f8f9fb";
+ 
 
   printRoot.innerHTML = "";
   printRoot.appendChild(clone);
 
-  // Wait fonts to load
+  // Wait fonts/images
   if (document.fonts && document.fonts.ready) {
     await document.fonts.ready;
   }
-  await new Promise((r) => setTimeout(r, 300));
-
-  // ---- KEY FIX: Render canvas, then scale into A4 LANDSCAPE ----
-  const element = clone;
+  await new Promise((r) => setTimeout(r, 400));
 
   const opt = {
     margin: 0,
@@ -441,9 +443,9 @@ download.addEventListener("click", async () => {
       scale: 2,
       useCORS: true,
       backgroundColor: "#f8f9fb",
+      windowWidth: 1280,
       scrollX: 0,
-      scrollY: 0,
-      windowWidth: 1280
+      scrollY: 0
     },
     jsPDF: {
       unit: "mm",
@@ -452,5 +454,8 @@ download.addEventListener("click", async () => {
     }
   };
 
-  await html2pdf().set(opt).from(element).save();
+  await html2pdf().set(opt).from(clone).save();
 });
+
+
+

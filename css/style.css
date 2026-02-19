@@ -385,3 +385,21 @@ button#edit:hover {
 #print-root #certificate {
   display: flex !important;
 }
+
+
+.certificate-print {
+  display: flex !important;
+}
+
+
+
+
+/* Fix PDF render visibility */
+.certificate-print {
+  display: flex !important;
+}
+
+#print-root {
+  overflow: visible !important;
+  background: #f8f9fb;
+}
