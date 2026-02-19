@@ -246,24 +246,47 @@ button#download:active {
 
 /* Download Button State */
 .download-container {
-    display: flex;
+    display: none;
+    /* Hidden by default */
     justify-content: center;
+    gap: 1rem;
     width: 100%;
+    margin-top: 2rem;
 }
 
-#download {
-    display: none;
-    margin: 2rem auto;
+.download-container.active {
+    display: flex;
+}
+
+button#download {
     background-color: #2ecc71;
-    /* Green for download action */
     color: white;
 }
 
-#download:hover {
+button#download:hover {
     background-color: #27ae60;
 }
 
-/* Mobile Responsiveness */
+/* Edit Button Styling */
+button#edit {
+    background-color: #333;
+    color: #fff;
+    border: 1px solid #555;
+    padding: 0.875rem 2.5rem;
+    font-size: 1rem;
+    font-weight: 600;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-family: 'Space Grotesk', sans-serif;
+}
+
+button#edit:hover {
+    background-color: #444;
+    border-color: #666;
+    transform: translateY(-2px);
+}
+
 /* Mobile Responsiveness */
 @media (max-width: 768px) {
     .app-container {
@@ -271,7 +294,7 @@ button#download:active {
         width: 100%;
         max-width: 100%;
         overflow-x: hidden;
-        /* Prevent horizontal scroll on body */
+        /* Prevent horizontal scroll */
     }
 
     .app-title {
@@ -286,7 +309,7 @@ button#download:active {
 
     #form {
         grid-template-columns: 1fr;
-        padding: 1.25rem;
+        padding: 1.5rem;
         gap: 1rem;
     }
 
@@ -300,63 +323,56 @@ button#download:active {
         /* Prevents iOS zoom */
     }
 
+    .btn-container {
+        grid-column: span 1;
+    }
+
     /* Verified Certificate Scaling Wrapper */
     #certificate-wrapper {
         width: 100%;
         overflow: hidden;
-        /* Hide overflow to prevent scrolling */
         display: flex;
-        /* Flex to center the scaled content */
         justify-content: center;
         align-items: flex-start;
         margin-top: 20px;
         background: #f8f9fb;
-        /* Match cert bg to avoid gaps showing */
         border-radius: 4px;
+        /* Ensure it doesn't collapse */
+        min-height: 200px;
     }
 
     #certificate {
-        /* transform scaling will be applied via JS to ensure perfect fit */
-        transform-origin: top center;
+        transform-origin: top left;
+        /* Changed to top left for easier scaling */
         margin: 0;
-        /* Force display flex when visible to ensure correct layout calculation */
         box-shadow: none;
-        /* remove shadow if any */
     }
 
-    /* Fixed Download Button */
+    /* Fixed Download/Edit Buttons */
     .download-container {
         position: fixed;
         bottom: 0;
         left: 0;
         width: 100%;
         background: #1e1e1e;
-        /* Match card bg */
         padding: 1rem;
-        display: none;
-        /* Hidden by default */
-        justify-content: center;
-        border-top: 1px solid #333;
         z-index: 1000;
         box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.5);
-    }
-
-    /* When active class is added by JS */
-    .download-container.active {
-        display: flex;
-    }
-
-    /* Override specific button styles for mobile fixed position */
-    #download {
         margin: 0;
-        width: 100%;
-        max-width: 400px;
-        display: block;
-        /* Ensure button itself is visible within container */
+        gap: 10px;
     }
 
-    /* Add padding to body so content isn't covered by fixed button */
+    .download-container button {
+        flex: 1;
+        /* Make buttons verify side by side */
+        padding: 0.875rem 1rem;
+        /* Adjust padding for smaller screens */
+        font-size: 0.9rem;
+        white-space: nowrap;
+    }
+
     body {
-        padding-bottom: 100px;
+        padding-bottom: 120px;
+        /* Space for fixed footer */
     }
 }

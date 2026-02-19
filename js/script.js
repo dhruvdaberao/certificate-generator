@@ -94,17 +94,12 @@ generate.addEventListener("click", (e) => {
     <h4>Length &nbsp;<b>${c_length} total hours</b></h4>
   </div>
   `;
-    // Show download button
-    const downloadBtn = document.getElementById("download");
-    // Show container if on mobile (CSS handles display:none/flex based on media query and active state logic if we used classes, but here we force display)
-    // Actually, let's just use display block for button. The CSS handles the rest?
-    // In CSS mobile: .download-container { display: none; }
-    // So we need to show the container on mobile too.
+    // Show download/edit buttons
     const downloadContainer = document.querySelector(".download-container");
     if (downloadContainer) {
-      downloadContainer.style.display = "flex";
+      downloadContainer.classList.add("active");
+      downloadContainer.style.display = "flex"; // Force flex for desktop
     }
-    downloadBtn.style.display = "block";
 
     // Scale after render
     setTimeout(scaleCertificate, 100);
@@ -112,7 +107,7 @@ generate.addEventListener("click", (e) => {
 });
 
 function scaleCertificate() {
-  const wrapper = document.getElementById('certificate-wrapper'); // New wrapper 
+  const wrapper = document.getElementById('certificate-wrapper');
   const certificate = document.getElementById('certificate');
 
   if (!wrapper || !certificate || certificate.style.display === 'none') return;
@@ -124,28 +119,53 @@ function scaleCertificate() {
   const containerWidth = wrapper.offsetWidth;
   const certificateWidth = 1280; // Fixed width from CSS
 
+  // On desktop, we might not want to scale down if there's space, 
+  // but if it's smaller than 1280, we must scale.
   if (containerWidth < certificateWidth) {
     const scale = containerWidth / certificateWidth;
     certificate.style.transform = `scale(${scale})`;
     certificate.style.transformOrigin = 'top left';
 
-    // We need to set wrapper height because scaled element takes up same layout space originally
-    // Wait, transform scale doesn't affect layout flow? 
-    // Usually it leaves empty space.
-    // So we set wrapper height to the SCALED height.
+    // Set wrapper height to the SCALED height
     wrapper.style.height = `${certificate.scrollHeight * scale}px`;
     wrapper.style.marginBottom = '20px';
+  } else {
+    // If screen is large enough, just center it
+    certificate.style.transform = 'none';
+    certificate.style.margin = '0 auto';
+    wrapper.style.height = 'auto';
   }
 }
 
 window.addEventListener('resize', scaleCertificate);
 
-//Download PDF
+// Edit Details Functionality
+const editBtn = document.getElementById("edit");
+editBtn.addEventListener("click", () => {
+  // Hide certificate
+  let certificate = document.getElementById("certificate");
+  certificate.style.display = "none";
 
+  let wrapper = document.getElementById('certificate-wrapper');
+  wrapper.style.height = '0';
+  wrapper.style.marginBottom = '0';
+
+  // Hide buttons
+  const downloadContainer = document.querySelector(".download-container");
+  downloadContainer.classList.remove("active");
+  downloadContainer.style.display = "none";
+
+  // Show form
+  form.style.display = "grid"; // Restore grid layout
+});
+
+//Download PDF
 let download = document.getElementById("download");
 download.addEventListener("click", () => {
+  let certificate = document.getElementById("certificate");
+
   // Trigger Confetti
-  var duration = 5 * 1000;
+  var duration = 3 * 1000;
   var animationEnd = Date.now() + duration;
   var defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 0 };
 
@@ -161,18 +181,43 @@ download.addEventListener("click", () => {
     }
 
     var particleCount = 50 * (timeLeft / duration);
-    // since particles fall down, start a bit higher than random
     confetti(Object.assign({}, defaults, { particleCount, origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 } }));
     confetti(Object.assign({}, defaults, { particleCount, origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 } }));
   }, 250);
 
+  // PREPARE FOR PDF GENERATION
+  // 1. Store current transform styles
+  const originalTransform = certificate.style.transform;
+  const originalTransformOrigin = certificate.style.transformOrigin;
+  const originalMargin = certificate.style.margin;
+
+  // 2. Reset styles to ensure PDF is generated from full-size, unscaled element
+  // We need the element to be visible and fully rendered at 1280px width
+  certificate.style.transform = "none";
+  certificate.style.margin = "0"; // Reset margin to avoid offsetting in PDF
+
+  // 3. Generate PDF
   var opt = {
-    margin: 1,
+    margin: 0,
     filename: `Udemy-certificate.pdf`,
     image: { type: "jpeg", quality: 0.98 },
-    html2canvas: { scale: 2 },
-    jsPDF: { unit: "px", format: "c2", orientation: "landscape" },
+    html2canvas: {
+      scale: 2, // Higher scale for better quality
+      useCORS: true,
+      scrollY: 0,
+      scrollX: 0,
+      windowWidth: 1280 // Force canvas width to match certificate width
+    },
+    jsPDF: { unit: "px", format: [1280, 850], orientation: "landscape" }, // Match certificate dimensions roughly (1280 width)
   };
 
-  html2pdf().set(opt).from(certificate).save();
+  html2pdf().set(opt).from(certificate).save().then(() => {
+    // 4. Restore styles after generation
+    certificate.style.transform = originalTransform;
+    certificate.style.transformOrigin = originalTransformOrigin;
+    certificate.style.margin = originalMargin;
+
+    // Re-run scale to be safe
+    scaleCertificate();
+  });
 });
