@@ -402,24 +402,6 @@ editBtn.addEventListener("click", () => {
 // ✅ Download PDF (FIXED: no blank pages)
 let download = document.getElementById("download");
 download.addEventListener("click", async () => {
-  // Trigger Confetti
-  var duration = 3 * 1000;
-  var animationEnd = Date.now() + duration;
-  var defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 0 };
-
-  function randomInRange(min, max) {
-    return Math.random() * (max - min) + min;
-  }
-
-  var interval = setInterval(function () {
-    var timeLeft = animationEnd - Date.now();
-    if (timeLeft <= 0) return clearInterval(interval);
-
-    var particleCount = 50 * (timeLeft / duration);
-    confetti(Object.assign({}, defaults, { particleCount, origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 } }));
-    confetti(Object.assign({}, defaults, { particleCount, origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 } }));
-  }, 250);
-
   const originalCert = document.getElementById("certificate");
   const printRoot = document.getElementById("print-root");
 
@@ -442,30 +424,33 @@ download.addEventListener("click", async () => {
   printRoot.innerHTML = "";
   printRoot.appendChild(clone);
 
-  // Wait fonts/images
+  // Wait fonts to load
   if (document.fonts && document.fonts.ready) {
     await document.fonts.ready;
   }
   await new Promise((r) => setTimeout(r, 300));
 
-  const certHeight = clone.scrollHeight;
+  // ---- KEY FIX: Render canvas, then scale into A4 LANDSCAPE ----
+  const element = clone;
 
   const opt = {
     margin: 0,
-    filename: `Udemy-certificate.pdf`,
+    filename: "Udemy-certificate.pdf",
     image: { type: "jpeg", quality: 1 },
     html2canvas: {
       scale: 2,
       useCORS: true,
       backgroundColor: "#f8f9fb",
-      scrollY: 0,
       scrollX: 0,
-      windowWidth: 1280,
-      width: 1280,
-      height: certHeight,
+      scrollY: 0,
+      windowWidth: 1280
     },
-    jsPDF: { unit: "px", format: [1280, certHeight], orientation: "landscape" },
+    jsPDF: {
+      unit: "mm",
+      format: "a4",
+      orientation: "landscape"
+    }
   };
 
-  await html2pdf().set(opt).from(clone).save();
+  await html2pdf().set(opt).from(element).save();
 });

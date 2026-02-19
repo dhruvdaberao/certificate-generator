@@ -376,3 +376,12 @@ button#edit:hover {
         /* Space for fixed footer */
     }
 }
+
+
+#print-root {
+  overflow: visible !important;
+  background: #f8f9fb;
+}
+#print-root #certificate {
+  display: flex !important;
+}
