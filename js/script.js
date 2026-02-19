@@ -196,19 +196,25 @@ download.addEventListener("click", () => {
   certificate.style.transform = "none";
   certificate.style.margin = "0"; // Reset margin to avoid offsetting in PDF
 
+  // Get exact dimensions of the certificate
+  const certWidth = certificate.offsetWidth;
+  const certHeight = certificate.offsetHeight;
+
   // 3. Generate PDF
   var opt = {
     margin: 0,
     filename: `Udemy-certificate.pdf`,
     image: { type: "jpeg", quality: 0.98 },
     html2canvas: {
-      scale: 2, // Higher scale for better quality
+      scale: 1, // Use 1:1 scale to avoid zooming/cropping issues
       useCORS: true,
       scrollY: 0,
       scrollX: 0,
-      windowWidth: 1280 // Force canvas width to match certificate width
+      windowWidth: certWidth, // Match window width to element width
+      width: certWidth,
+      height: certHeight
     },
-    jsPDF: { unit: "px", format: [1280, 850], orientation: "landscape" }, // Match certificate dimensions roughly (1280 width)
+    jsPDF: { unit: "px", format: [certWidth, certHeight], orientation: "landscape" }, // Exact match
   };
 
   html2pdf().set(opt).from(certificate).save().then(() => {
