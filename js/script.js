@@ -94,9 +94,51 @@ generate.addEventListener("click", (e) => {
     <h4>Length &nbsp;<b>${c_length} total hours</b></h4>
   </div>
   `;
-    document.getElementById("download").style.display = "block";
+    // Show download button
+    const downloadBtn = document.getElementById("download");
+    // Show container if on mobile (CSS handles display:none/flex based on media query and active state logic if we used classes, but here we force display)
+    // Actually, let's just use display block for button. The CSS handles the rest?
+    // In CSS mobile: .download-container { display: none; }
+    // So we need to show the container on mobile too.
+    const downloadContainer = document.querySelector(".download-container");
+    if (downloadContainer) {
+      downloadContainer.style.display = "flex";
+    }
+    downloadBtn.style.display = "block";
+
+    // Scale after render
+    setTimeout(scaleCertificate, 100);
   }
 });
+
+function scaleCertificate() {
+  const wrapper = document.getElementById('certificate-wrapper'); // New wrapper 
+  const certificate = document.getElementById('certificate');
+
+  if (!wrapper || !certificate || certificate.style.display === 'none') return;
+
+  // Reset transform to measure accurately
+  certificate.style.transform = 'none';
+  wrapper.style.height = 'auto';
+
+  const containerWidth = wrapper.offsetWidth;
+  const certificateWidth = 1280; // Fixed width from CSS
+
+  if (containerWidth < certificateWidth) {
+    const scale = containerWidth / certificateWidth;
+    certificate.style.transform = `scale(${scale})`;
+    certificate.style.transformOrigin = 'top left';
+
+    // We need to set wrapper height because scaled element takes up same layout space originally
+    // Wait, transform scale doesn't affect layout flow? 
+    // Usually it leaves empty space.
+    // So we set wrapper height to the SCALED height.
+    wrapper.style.height = `${certificate.scrollHeight * scale}px`;
+    wrapper.style.marginBottom = '20px';
+  }
+}
+
+window.addEventListener('resize', scaleCertificate);
 
 //Download PDF
 
